@@ -4,8 +4,10 @@
 
 mod output_status;
 mod lid_status;
+mod swaysock;
 extern crate edid_rs;
 
+use swaysock::ensure_swaysock;
 use std::{cmp::{self, Ordering}, env, process::exit};
 use lid_status::{inspect_lid, LidState};
 use output_status::{inspect_outputs, Output, OutputStatus};
@@ -13,17 +15,14 @@ use swayipc::{Connection, Fallible};
 
 
 fn main() -> Fallible<()> {
+  ensure_swaysock();
   let output_status = inspect_outputs();
-
 
   match inspect_lid().state {
     LidState::Open => open_lid(&output_status)?,
     LidState::Closed => closed_lid(&output_status)?,
     _ => print!("I don't know if it's open or not :("),
   }
-
-
-
 
   let output_count = output_status.count();
 
@@ -35,6 +34,8 @@ fn main() -> Fallible<()> {
 
   Ok(())
 }
+
+
 
 fn open_lid(outputs: &OutputStatus) -> Fallible<()> {
   match outputs.e_dp1.enabled {
