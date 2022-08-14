@@ -7,11 +7,7 @@ A rust program that tells sway over ipc to enable or disable my laptop screen as
 
 install with `cargo install --git https://github.com/Avemark/swaylid`
 
-run with systemd units in `~/.config/systemd/user/`
-the `SWAYSOCK` env variable might need modifying, or be removed if your system sets it appropriately.
-
-enable with `systemctl --user enable --now swaylid.timer`, the swaylid service itself
-does not need manual enabling.
+See example systemd units in [examples](examples/units/)
 
 ## Future
 
