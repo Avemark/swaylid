@@ -7,7 +7,6 @@ mod lid_status;
 extern crate edid_rs;
 
 use std::{cmp::{self, Ordering}, env, process::exit};
-
 use lid_status::{inspect_lid, LidState};
 use output_status::{inspect_outputs, Output, OutputStatus};
 use swayipc::{Connection, Fallible};
@@ -29,7 +28,7 @@ fn main() -> Fallible<()> {
   let output_count = output_status.count();
 
   match 1.cmp(&output_count) {
-    Ordering::Greater => println!("There's {} displays connected!", output_count),
+    Ordering::Greater => println!("There's {} enabled displays connected!", output_count),
     Ordering::Equal => println!("just the one screen."),
     Ordering::Less => println!("no screens?"),
   }
@@ -54,8 +53,11 @@ fn open_lid(outputs: &OutputStatus) -> Fallible<()> {
 
 fn closed_lid(outputs: &OutputStatus) -> Fallible<()>{
   match outputs.e_dp1.enabled {
-    false => println!("sleepin already, "),
-    true => () //ipc_command("output eDP-1 disable")?
+    false => print!("sleepin already, "),
+    true => {
+      print!("Time to sleep, ");
+      ipc_command("output eDP-1 disable")?
+    }
   }
   Ok(())
 }
