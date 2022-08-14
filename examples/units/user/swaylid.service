@@ -1,0 +1,8 @@
+[Unit]
+Description=Swaylid
+
+[Service]
+ExecStart=~/.cargo/bin/swaylid
+
+[Install]
+WantedBy=graphical.target
