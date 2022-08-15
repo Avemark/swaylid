@@ -77,19 +77,15 @@ fn get_output(output_key: String) -> Output {
   let base_path = format!("/sys/class/drm/card0-{}/", output_key);
 
 
-  let status = match read_to_string(format!("{}{}", &base_path, "enabled")) {
+  let enabled = match read_to_string(format!("{}{}", &base_path, "enabled")) {
     Ok(status) => {
       match status.as_str().trim() {
         "enabled" => true,
-        _ => false,
+        _ => return Output { edid: None, enabled: false },
       }
     },
-    Err(_) => false,
+    Err(_) => return Output { edid: None, enabled: false },
   };
-
-  if !status {
-    return Output { edid: None, enabled: false }
-  }
 
   let edid = match readfile(&base_path, "edid") {
     Some(bytes) => match edid_rs::parse(&mut Cursor::new(bytes)) {
@@ -102,7 +98,7 @@ fn get_output(output_key: String) -> Output {
     None => None
   };
 
-  Output { edid: edid, enabled: status }
+  Output { edid, enabled }
 }
 
 fn readfile(base_path: &str, file: &str) -> Option<Vec<u8>> {
