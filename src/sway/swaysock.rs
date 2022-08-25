@@ -1,6 +1,6 @@
 use std::{process::{Command, Stdio}, io::Read};
 
-use swayipc::Fallible;
+use swayipc::Error;
 
 static SOCK_ENV_KEY: &str = "SWAYSOCK";
 
@@ -16,7 +16,7 @@ pub fn ensure_swaysock() {
   }
 }
 
-fn socket_path() -> Fallible<String> {
+fn socket_path() -> Result<String, Error> {
   Ok(
     format!(
       "/run/user/{uid}/sway-ipc.{uid}.{pid}.sock",
@@ -26,7 +26,7 @@ fn socket_path() -> Fallible<String> {
   )
 }
 
-fn ext_command<'a>(cmd: &'a str, arg: Option<&str>) -> Fallible<String> {
+fn ext_command<'a>(cmd: &'a str, arg: Option<&str>) -> Result<String, Error> {
   let mut command = Command::new(cmd);
   let mut child = apply_arg(&mut command, arg).stdout(Stdio::piped()).spawn()?;
 

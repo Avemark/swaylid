@@ -8,16 +8,6 @@ pub struct LidStatus {
   pub state: LidState
 }
 
-impl LidStatus {
-  pub fn open(self) -> bool {
-    self.state == LidState::Open
-  }
-
-  pub fn _closed(self) -> bool {
-    self.state == LidState::Closed
-  }
-}
-
 impl From<String> for LidStatus {
   fn from(item: String) -> Self {
     LidStatus {
