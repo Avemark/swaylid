@@ -3,12 +3,6 @@
 version = 3
 
 [[package]]
-name = "edid-rs"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2ab5fa33485cd85ac354df485819a63360fefa312fe04cffe65e6f175be1522c"
-
-[[package]]
 name = "itoa"
 version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -93,9 +87,8 @@ dependencies = [
 
 [[package]]
 name = "swaylid"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
- "edid-rs",
  "swayipc",
 ]
 
